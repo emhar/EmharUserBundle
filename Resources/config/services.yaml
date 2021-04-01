@@ -1,0 +1,18 @@
+services:
+    Emhar\EmharUserBundle\Controller\SecurityController:
+        class: Emhar\EmharUserBundle\Controller\SecurityController
+        arguments: ['@security.authentication_utils']
+        tags: [controller.service_arguments, controller.service_subscriber]
+        calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
+    Emhar\EmharUserBundle\Security\EmharUserAuthenticatorAuthenticator:
+        class: Emhar\EmharUserBundle\Security\EmharUserAuthenticatorAuthenticator
+        arguments:
+            - '@Doctrine\ORM\EntityManagerInterface'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - '@Symfony\Component\Security\Csrf\CsrfTokenManagerInterface'
+            - '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface'
+
+    Emhar\EmharUserBundle\Repository\UserRepository:
+        class: Emhar\EmharUserBundle\Repository\UserRepository
+        arguments: ['@doctrine']
+        tags: ['doctrine.repository_service']
